@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import axios from "axios"; 
-import { Link } from "react-router-dom";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure()
 export class UserLogin extends Component{
     state = {
         username: '',
@@ -19,8 +21,19 @@ export class UserLogin extends Component{
             console.log(res.data);
             console.log(res.data.status);
             if(res.data.status === 200){
-                window.location = "/Home"
+              toast.success('User logged in successfully')
+              sessionStorage.setItem('islogin',user.username );
+                window.location = "/prop"
             }
+            if(res.data.status === 404){
+              toast.error("Password Mismatch")
+          
+            }
+            if(res.data.status === 404){
+              toast.error("User name not registered")
+              // window.location.href='/login';
+            }
+
             else{
 
             }
@@ -44,24 +57,23 @@ export class UserLogin extends Component{
                               
                 <div className="form-group">
                     <label>Username</label>
-                    <input type="text" className="form-control" placeholder="Enter Your Usename" name = "username" onChange= {this.handleChange} />
+                    <input type="text" className="form-control" placeholder="Enter Your Usename" name = "username" onChange= {this.handleChange}  required/>
                 </div>
 
                 <div className="form-group">
                     <label>Password</label>
-                    <input type="password" className="form-control" placeholder="Enter password" name = "password" onChange= {this.handleChangee} />
+                    <input type="password" className="form-control" placeholder="Enter Password" name = "password" onChange= {this.handleChangee}  required/>
                 </div>
-
-                {/* <button type="submit" className="btn btn-dark btn-lg btn-block"><Link to="/Home">Login</Link></button> */}
                 &nbsp;
                 &nbsp;
                 &nbsp;
                 &nbsp;
                 &nbsp;
-                <button type="submit" className="btn btn-dark btn-lg btn-block">Login</button>
-                {/* <p className="forgot-password text-right">
-                    Already registered <a href="#">log in?</a>
-                </p> */}
+                <br/>
+                <button type="submit" className="btn btn-dark btn-lg btn-block"  >Login</button>
+                 <p className="forgot-password text-right">
+                    Not yet registred <a href="/SignUp">Sign Up?</a>
+                </p> 
             </form>
             </div>
 
